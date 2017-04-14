@@ -29,13 +29,13 @@ namespace xx_tcp
         {
             this.header = header;
             this.body = body;
-            this.header.Encode();
             this.body.Encode();
-            headerBytes = this.header.GetBytes();
             bodyBytes = this.body.GetBytes();
+            header.bodyLength = bodyBytes.Length;
+            this.header.Encode();
+            headerBytes = this.header.GetBytes();
             MsgBytes = new byte[headerBytes.Length+bodyBytes.Length];
             headerBytes.CopyTo(MsgBytes,0);
-            header.bodyLength = bodyBytes.Length;
             bodyBytes.CopyTo(MsgBytes,headerBytes.Length);
         }
         

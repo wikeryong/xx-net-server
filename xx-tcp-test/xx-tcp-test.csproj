@@ -7,8 +7,8 @@
     <ProjectGuid>{579E9B5C-469E-45D4-BAF3-4BD1D64EEF6E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cs_tcp_test</RootNamespace>
-    <AssemblyName>cs_tcp_test</AssemblyName>
+    <RootNamespace>xx_tcp_test</RootNamespace>
+    <AssemblyName>xx-tcp-test</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

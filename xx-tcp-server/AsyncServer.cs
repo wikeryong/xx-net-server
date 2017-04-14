@@ -44,7 +44,7 @@ namespace xx_tcp
         /// <summary>
         /// 获取和设置Header的长度
         /// </summary>
-        public int HeaderSize { get; set; }
+        public int HeaderLength { get; set; }
         public string ServerName { get; set; }
 
         public static ManualResetEvent allDone = new ManualResetEvent(false);
@@ -105,8 +105,8 @@ namespace xx_tcp
                 readState.workSocket = handler;
                 readState.sessionId = client.SessionId;
 
-                readState.HeaderBytes = new byte[HeaderSize];
-                handler.BeginReceive(readState.HeaderBytes, 0, HeaderSize, SocketFlags.None, new AsyncCallback(ReadHeadCallback), readState);
+                readState.HeaderBytes = new byte[HeaderLength];
+                handler.BeginReceive(readState.HeaderBytes, 0, HeaderLength, SocketFlags.None, new AsyncCallback(ReadHeadCallback), readState);
             }
             catch (Exception e)
             {
@@ -198,8 +198,8 @@ namespace xx_tcp
                     ReadState readStateNew = new ReadState();
                     readStateNew.workSocket = handler;
                     readStateNew.sessionId = header.SessionId;
-                    readStateNew.HeaderBytes = new byte[HeaderSize];
-                    handler.BeginReceive(readStateNew.HeaderBytes, 0, HeaderSize, SocketFlags.None, new AsyncCallback(ReadHeadCallback), readStateNew);
+                    readStateNew.HeaderBytes = new byte[HeaderLength];
+                    handler.BeginReceive(readStateNew.HeaderBytes, 0, HeaderLength, SocketFlags.None, new AsyncCallback(ReadHeadCallback), readStateNew);
                 }
             }
             catch (Exception e)
