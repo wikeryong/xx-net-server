@@ -49,8 +49,8 @@ namespace xx_tcp
 
         public static ManualResetEvent allDone = new ManualResetEvent(false);
 
-        public bool printReceiveHex = false;
-        public bool printSendHex = false;
+        public bool PrintReceiveHex = false;
+        public bool PrintSendHex = false;
 
         public void Start(int port)
         {
@@ -141,7 +141,7 @@ namespace xx_tcp
                     readState.header = header;
                     header.Debug();
                     header.Info();
-                    if (printReceiveHex)
+                    if (PrintReceiveHex)
                     {
                         PrintUtils.PrintHex(header.bytes);
                     }
@@ -176,7 +176,7 @@ namespace xx_tcp
                 {
                 
                 
-                    if (printReceiveHex)
+                    if (PrintReceiveHex)
                     {
                         PrintUtils.PrintHex(readState.BodyBytes);
                     }
@@ -225,7 +225,7 @@ namespace xx_tcp
                     throw new Exception("Not found client by session:"+ sessionId);
                 }
                 LOG.DebugFormat("Send {0} bytes to {1}", msg.MsgBytes.Length, client.socket.RemoteEndPoint);
-                if (printSendHex)
+                if (PrintSendHex)
                 {
                     PrintUtils.PrintHex(msg.MsgBytes);
                 }

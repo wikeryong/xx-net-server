@@ -29,8 +29,8 @@ namespace xx_tcp_test
             // name：用于区别多个server的标志。
             // createHeader：实例化你用到的Header继承于xxHeader
             xxTCPAsyncServer server = xxTCPServer.CreateServer("test1", CreateHeader);
-            server.printReceiveHex = true; //开启打印接收到数据的Hex
-            server.printSendHex = true; //开启打印发送数据的Hex
+            server.PrintReceiveHex = true; //开启打印接收到数据的Hex
+            server.PrintSendHex = true; //开启打印发送数据的Hex
             server.HeaderLength = 8; // 协议中消息头的长度。这个必须设置
             server.MainNotify += MainHandler; //一个消息接收完之后的事件处理。
             server.Start(8001);
