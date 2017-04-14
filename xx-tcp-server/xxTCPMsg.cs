@@ -5,18 +5,18 @@ using System.Text;
 
 namespace xx_tcp
 {
-    public class xxMsg
+    public class xxTCPMsg
     {
-        private xxHeader header;
-        private xxBody body;
+        private xxTCPHeader header;
+        private xxTCPBody body;
 
-        public xxHeader Header
+        public xxTCPHeader Header
         {
             get { return header; }
             set { header = value; }
         }
 
-        public xxBody Body
+        public xxTCPBody Body
         {
             get { return body; }
             set { body = value; }
@@ -25,7 +25,7 @@ namespace xx_tcp
         private byte[] headerBytes;
         private byte[] bodyBytes;
 
-        public xxMsg(xxHeader header, xxBody body)
+        public xxTCPMsg(xxTCPHeader header, xxTCPBody body)
         {
             this.header = header;
             this.body = body;

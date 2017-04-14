@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xx-tcp-server", "xx-tcp-ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xx-tcp-test", "xx-tcp-test\xx-tcp-test.csproj", "{579E9B5C-469E-45D4-BAF3-4BD1D64EEF6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xx-udp-server", "xx-udp-server\xx-udp-server.csproj", "{9C6938A7-3946-419B-8B71-3E4075762966}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xx-udp-test", "xx-udp-test\xx-udp-test.csproj", "{021C4493-1856-4D01-9497-A42A8E8CD0B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{579E9B5C-469E-45D4-BAF3-4BD1D64EEF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{579E9B5C-469E-45D4-BAF3-4BD1D64EEF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{579E9B5C-469E-45D4-BAF3-4BD1D64EEF6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C6938A7-3946-419B-8B71-3E4075762966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C6938A7-3946-419B-8B71-3E4075762966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C6938A7-3946-419B-8B71-3E4075762966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C6938A7-3946-419B-8B71-3E4075762966}.Release|Any CPU.Build.0 = Release|Any CPU
+		{021C4493-1856-4D01-9497-A42A8E8CD0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{021C4493-1856-4D01-9497-A42A8E8CD0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{021C4493-1856-4D01-9497-A42A8E8CD0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{021C4493-1856-4D01-9497-A42A8E8CD0B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace xx_tcp
 {
-    public class xxBody
+    public class xxTCPBody
     {
         private byte[] bodyBytes;
 
@@ -33,7 +33,7 @@ namespace xx_tcp
         {
         }
 
-        public virtual xxMsg GetSendMsg()
+        public virtual xxTCPMsg GetSendMsg()
         {
             return null;
         }

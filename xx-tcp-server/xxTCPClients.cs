@@ -6,7 +6,7 @@ using System.Text;
 
 namespace xx_tcp
 {
-    public class xxClients
+    public class xxTCPClients
     {
         private static IDictionary<string, xxClient> clientSockets = new Dictionary<string, xxClient>();
 

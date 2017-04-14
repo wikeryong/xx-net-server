@@ -28,7 +28,7 @@ namespace xx_tcp_test
             //创建一个Server，二个参数：
             // name：用于区别多个server的标志。
             // createHeader：实例化你用到的Header继承于xxHeader
-            AsyncServer server = xxServer.CreateServer("test1", CreateHeader);
+            xxTCPAsyncServer server = xxTCPServer.CreateServer("test1", CreateHeader);
             server.printReceiveHex = true; //开启打印接收到数据的Hex
             server.printSendHex = true; //开启打印发送数据的Hex
             server.HeaderLength = 8; // 协议中消息头的长度。这个必须设置
@@ -52,7 +52,7 @@ namespace xx_tcp_test
                 TestBody body = new TestBody();
                 body.testVal1 = 110;
                 body.testVal2 = msginput;
-                xxMsg msg = new xxMsg(header, body);
+                xxTCPMsg msg = new xxTCPMsg(header, body);
                 ns.Write(msg.MsgBytes,0,msg.MsgBytes.Length);
 
                 header.bytes = new byte[8];
@@ -72,7 +72,7 @@ namespace xx_tcp_test
             }
         }
 
-        private static void MainHandler(xxHeader header, xxBody body)
+        private static void MainHandler(xxTCPHeader header, xxTCPBody body)
         {
             //这里一般在header中可能有消息ID。可以在这里进行区分
             TestBody test = (TestBody)body;
@@ -81,7 +81,7 @@ namespace xx_tcp_test
             LOG.InfoFormat("回调的MsgId:{0},bodyLen:{1},from:{2}", testHeader.msgId, testHeader.bodyLength + ",", testHeader.RemoteSocket.RemoteEndPoint);
         }
 
-        private static xxHeader CreateHeader()
+        private static xxTCPHeader CreateHeader()
         {
             return new TestHeader();
         }
@@ -90,7 +90,7 @@ namespace xx_tcp_test
     /// <summary>
     /// 消息体，继承xxBody,接收到消息会自动调用Decode方法，发送时会自动调用Encode方法
     /// </summary>
-    public class TestBody : xxBody
+    public class TestBody : xxTCPBody
     {
         private static log4net.ILog LOG = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -115,7 +115,7 @@ namespace xx_tcp_test
 
         //这里不是必须重写，如果重写了，服务器处理完消息后，会将此消息再发送给客户端，
         //也可以手动调用AsyncServer 的Send方法来发送消息
-        public override xxMsg GetSendMsg()
+        public override xxTCPMsg GetSendMsg()
         {
             //构造一个返回的消息
             TestHeader header = new TestHeader();
@@ -123,7 +123,7 @@ namespace xx_tcp_test
             TestBody body = new TestBody();
             body.testVal1 = 110;
             body.testVal2 = "Hello，"+testVal2;
-            xxMsg msg = new xxMsg(header, body);
+            xxTCPMsg msg = new xxTCPMsg(header, body);
             msg.CloseClient = false;
             return msg;
         }
@@ -138,7 +138,7 @@ namespace xx_tcp_test
     /// <summary>
     /// 消息头，继承xxHeader,接收到消息会自动调用Decode方法，发送时会自动调用Encode方法
     /// </summary>
-    public class TestHeader : xxHeader
+    public class TestHeader : xxTCPHeader
     {
         private static log4net.ILog LOG = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -170,7 +170,7 @@ namespace xx_tcp_test
         /// 根据当前的消息头创建一个对应的消息体
         /// </summary>
         /// <returns></returns>
-        public override xxBody InstanceBody()
+        public override xxTCPBody InstanceBody()
         {
             return new TestBody();
         }

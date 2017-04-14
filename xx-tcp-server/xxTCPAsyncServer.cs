@@ -13,7 +13,7 @@ namespace xx_tcp
         public string sessionId { get; set; }
         // Client  socket.
         public Socket workSocket = null;
-        public xxHeader header { get; set; }
+        public xxTCPHeader header { get; set; }
         // Size of receive buffer.
         // Receive buffer.
         public byte[] HeaderBytes { get; set; }
@@ -23,24 +23,24 @@ namespace xx_tcp
     public class SendState
     {
         public Socket RemoteSocket { get; set; }
-        public xxMsg Msg { get; set; }
+        public xxTCPMsg Msg { get; set; }
 
         public xxClient Client { get; set; }
 
         public bool closeClient { get; set; }
     }
 
-    public class AsyncServer
+    public class xxTCPAsyncServer
     {
         private static log4net.ILog LOG = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         
 
-        public xxServer.InstanceHeaderNeed InstanceHeader;
-        public event xxServer.MainNotifyHandler MainNotify;
-        public event xxServer.ReadErrorHandler ReadSocketError;
-        public event xxServer.SendErrorHandler SendSocketError;
-        public event xxServer.SendFinishHandler SendFinish;
+        public xxTCPServer.InstanceHeaderNeed InstanceHeader;
+        public event xxTCPServer.MainNotifyHandler MainNotify;
+        public event xxTCPServer.ReadErrorHandler ReadSocketError;
+        public event xxTCPServer.SendErrorHandler SendSocketError;
+        public event xxTCPServer.SendFinishHandler SendFinish;
         /// <summary>
         /// 获取和设置Header的长度
         /// </summary>
@@ -93,14 +93,14 @@ namespace xx_tcp
                 Socket listener = (Socket) ar.AsyncState;
                 Socket handler = listener.EndAccept(ar);
 
-                string sessionId = xxClients.AssignSessionId();
+                string sessionId = xxTCPClients.AssignSessionId();
                 LOG.InfoFormat("New client:{0},sessionId:{1}", handler.RemoteEndPoint, sessionId);
 
                 xxClient client = new xxClient();
                 client.socket = handler;
                 client.SessionId = sessionId;
-                xxClients.Add(client.SessionId, client);
-                LOG.InfoFormat("Clients count:{0}",xxClients.ClientCount);
+                xxTCPClients.Add(client.SessionId, client);
+                LOG.InfoFormat("Clients count:{0}",xxTCPClients.ClientCount);
 
                 readState.workSocket = handler;
                 readState.sessionId = client.SessionId;
@@ -128,7 +128,7 @@ namespace xx_tcp
                 int bytesRead = handler.EndReceive(ar);
                 if (bytesRead > 0)
                 {
-                    xxHeader header = InstanceHeader?.Invoke();
+                    xxTCPHeader header = InstanceHeader?.Invoke();
                     if (header == null)
                     {
                         LOG.Error("Not found instance xxHeader class");
@@ -170,7 +170,7 @@ namespace xx_tcp
 
                 // Read data from the client socket. 
                 int bytesRead = handler.EndReceive(ar);
-                xxHeader header = readState.header;
+                xxTCPHeader header = readState.header;
 
                 if (bytesRead > 0)
                 {
@@ -181,14 +181,14 @@ namespace xx_tcp
                         PrintUtils.PrintHex(readState.BodyBytes);
                     }
 
-                    xxBody body = header.InstanceBody();
+                    xxTCPBody body = header.InstanceBody();
                     body.BodyBytes = readState.BodyBytes;
                     body.Decode();
                     body.Debug();
                     body.Info();
 
                     MainNotify?.Invoke(header, body);
-                    xxMsg sendMsg = body.GetSendMsg();
+                    xxTCPMsg sendMsg = body.GetSendMsg();
                     if (sendMsg != null)
                     {
                         Send(header.SessionId, sendMsg, sendMsg.CloseClient);
@@ -208,7 +208,7 @@ namespace xx_tcp
             }
         }
 
-        public void Send(string sessionId, xxMsg msg,bool closeClient)
+        public void Send(string sessionId, xxTCPMsg msg,bool closeClient)
         {
 
             try
@@ -219,7 +219,7 @@ namespace xx_tcp
                 {
                     throw new Exception("Session id is null!");
                 }
-                xxClient client = xxClients.GetClient(sessionId);
+                xxClient client = xxTCPClients.GetClient(sessionId);
                 if (client == null)
                 {
                     throw new Exception("Not found client by session:"+ sessionId);
@@ -258,7 +258,7 @@ namespace xx_tcp
                 SendFinish?.Invoke(handler);
                 if (handler.closeClient)
                 {
-                    xxClients.Close(handler.Client.SessionId);
+                    xxTCPClients.Close(handler.Client.SessionId);
                     LOG.InfoFormat("Client :{0} closed!", handler.Client.SessionId);
                 }
             }

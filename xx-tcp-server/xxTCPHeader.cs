@@ -7,7 +7,7 @@ using System.Text;
 
 namespace xx_tcp
 {
-    public abstract class xxHeader
+    public abstract class xxTCPHeader
     {
 
         public string SessionId { get; set; }
@@ -46,7 +46,7 @@ namespace xx_tcp
         {
         }
 
-        public abstract xxBody InstanceBody();
+        public abstract xxTCPBody InstanceBody();
 
 
         private MemoryStream stream = new MemoryStream();
