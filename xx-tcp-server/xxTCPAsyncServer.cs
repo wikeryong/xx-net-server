@@ -27,12 +27,12 @@ namespace xx_tcp
 
         public xxClient Client { get; set; }
 
-        public bool closeClient { get; set; }
+        public bool CloseClient { get; set; }
     }
 
     public class xxTCPAsyncServer
     {
-        private static log4net.ILog LOG = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static xxLogManager LOG = xxLogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         
 
@@ -230,7 +230,7 @@ namespace xx_tcp
                     PrintUtils.PrintHex(msg.MsgBytes);
                 }
                 SendState state = new SendState();
-                state.closeClient = closeClient;
+                state.CloseClient = closeClient;
                 state.RemoteSocket = client.socket;
                 state.Client = client;
                 state.Msg = msg;
@@ -256,7 +256,7 @@ namespace xx_tcp
                 int bytesSent = socket.EndSend(ar);
                 LOG.InfoFormat("Sent {0} bytes to {1} finish!", bytesSent, socket.RemoteEndPoint);
                 SendFinish?.Invoke(handler);
-                if (handler.closeClient)
+                if (handler.CloseClient)
                 {
                     xxTCPClients.Close(handler.Client.SessionId);
                     LOG.InfoFormat("Client :{0} closed!", handler.Client.SessionId);

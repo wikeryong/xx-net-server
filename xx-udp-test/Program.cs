@@ -11,6 +11,7 @@ namespace xx_udp_test
     {
         static void Main(string[] args)
         {
+            xxLogManager.Logger = new MyLogger();
             xxUDPAsyncServer server = xxUDPServer.CreateUDPServer("wiker", 8002);
             //下面的事件都是可以用的
             //server.CompletedSend += 发送完成事件
@@ -25,6 +26,14 @@ namespace xx_udp_test
             };
             server.Start();
             Thread.Sleep(1000000);
+        }
+    }
+
+    public class MyLogger : xxLogger
+    {
+        public xxLogManager CreateLogManager(Type type)
+        {
+            return new LogManager();
         }
     }
 }

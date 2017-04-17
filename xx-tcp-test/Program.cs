@@ -28,6 +28,7 @@ namespace xx_tcp_test
             //创建一个Server，二个参数：
             // name：用于区别多个server的标志。
             // createHeader：实例化你用到的Header继承于xxHeader
+            xxLogManager.Logger = new MyLogger();
             xxTCPAsyncServer server = xxTCPServer.CreateServer("test1", CreateHeader);
             server.PrintReceiveHex = true; //开启打印接收到数据的Hex
             server.PrintSendHex = true; //开启打印发送数据的Hex
@@ -173,6 +174,13 @@ namespace xx_tcp_test
         public override xxTCPBody InstanceBody()
         {
             return new TestBody();
+        }
+    }
+    public class MyLogger : xxLogger
+    {
+        public xxLogManager CreateLogManager(Type type)
+        {
+            return new LogManager();
         }
     }
 }

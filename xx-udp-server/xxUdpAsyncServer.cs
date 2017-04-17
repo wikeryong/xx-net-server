@@ -10,7 +10,7 @@ namespace xx_udp_server
     public class xxUDPAsyncServer
     {
 
-        private static log4net.ILog LOG = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static xxLogManager LOG = xxLogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Fields  
         /// <summary>  
         /// 服务器程序允许的最大客户端连接数  

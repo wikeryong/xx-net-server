@@ -6,9 +6,8 @@
 2. 兼容长连接和短连接
 3. 支持同时启动多个Server（监听不同的端口）
 4. 并没有实现解析结构体的工作（下一步可能会做）
-5. 依赖于Log4Net（后面可能去掉依赖，采用封装，为了适应每个项目使用的LOG）
-6. 可能不太适用于大量IO的项目，本项目为了主要为了实现针对数量不多TCP通信（后续将进行压力测试）
-7. 你需要做的就是处理每个消息的事件再分发。就是这么简单！
+5. 可能不太适用于大量IO的项目，本项目为了主要为了实现针对数量不多TCP通信（后续将进行压力测试）
+6. 你需要做的就是处理每个消息的事件再分发。就是这么简单！
 
 ## 快速开始
 ### TCP Server
@@ -42,6 +41,89 @@ server.DataReceived += (asyncServer, arg) =>
 server.Start();
 Thread.Sleep(1000000);
 ```
+
+### Log 使用
+继承xxLogManager
+``` C#
+public class LogManager:xxLogManager
+{
+    private static ILog LOG = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+    public override void Debug(object msg)
+    {
+        LOG.Debug(msg);
+    }
+
+    public override void DebugFormat(string msg, params object[] args)
+    {
+        LOG.DebugFormat(msg,args);
+    }
+
+    public override void Debug(object msg, Exception exception)
+    {
+        LOG.Debug(msg,exception);
+    }
+
+    public override void Info(object msg)
+    {
+        LOG.Info(msg);
+    }
+
+    public override void InfoFormat(string msg, params object[] args)
+    {
+        LOG.InfoFormat(msg,args);
+    }
+
+    public override void Info(object msg, Exception exception)
+    {
+        LOG.Info(msg,exception);
+    }
+
+    public override void Warn(object msg)
+    {
+        LOG.Warn(msg);
+    }
+
+    public override void Warn(object msg, Exception exception)
+    {
+        LOG.Warn(msg,exception);
+    }
+
+    public override void WarnFormat(string msg, params object[] args)
+    {
+        LOG.WarnFormat(msg,args);
+    }
+
+    public override void Error(object msg)
+    {
+        LOG.Error(msg);
+    }
+
+    public override void Error(object msg, Exception exception)
+    {
+        LOG.Error(msg,exception);
+    }
+
+    public override void ErrorFormat(string msg, params object[] args)
+    {
+        LOG.ErrorFormat(msg,args);
+    }
+}
+```
+
+实现xxLogger
+``` C#
+public class MyLogger : xxLogger
+{
+    public xxLogManager CreateLogManager(Type type)
+    {
+        return new LogManager();
+    }
+}
+
+//将接口传入，便可以使用日志了。当然如果你不想这么麻烦可以直接引用源码
+xxLogManager.Logger = new MyLogger();
+```
+
 ## Demo
 可以运行ServerTest中的start和ClientTest中的start。xx-tcp-test中有详细的测试代码
 ### TCP Test

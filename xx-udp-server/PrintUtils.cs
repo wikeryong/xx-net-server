@@ -7,7 +7,7 @@ namespace xx_udp_server
 {
     public class PrintUtils
     {
-        private static log4net.ILog LOG = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static xxLogManager LOG = xxLogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static void PrintHex(string msg)
         {
