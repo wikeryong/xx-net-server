@@ -42,6 +42,8 @@ namespace xx_udp_server
         /// </summary>  
         private byte[] _recvBuffer;
 
+        public string Name { get; set; }
+
         #endregion
 
         #region Properties  
@@ -122,7 +124,7 @@ namespace xx_udp_server
         {
             if (!IsRunning)
             {
-                LOG.InfoFormat("UDP server start on port:{0}", Port);
+                LOG.InfoFormat("({0}) UDP server start on port:{1}", Name, Port);
                 IsRunning = true;
                 _server.EnableBroadcast = true;
                 _server.BeginReceive(ReceiveDataAsync, udpReceiveState);
@@ -153,8 +155,15 @@ namespace xx_udp_server
             try
             {
                 buffer = _server.EndReceive(ar, ref remote);
-                string receiveString = Encoding.ASCII.GetString(buffer);
-                LOG.InfoFormat("Received {0}:{1},len:{2},body:{3}", remote.Address, remote.Port, buffer.Length, receiveString);
+                if (ServerType == UDPServerType.ASCII)
+                {
+                    string receiveString = Encoding.ASCII.GetString(buffer);
+                    LOG.InfoFormat("({4}) Received {0}:{1},len:{2},body:{3}", remote.Address, remote.Port, buffer.Length, receiveString, Name);
+                }
+                else
+                {
+                    LOG.InfoFormat("({3}) Received {0}:{1},len:{2}", remote.Address, remote.Port, buffer.Length, Name);
+                }
                 if (PrintHex)
                 {
                     PrintUtils.PrintHex(buffer);
@@ -183,7 +192,16 @@ namespace xx_udp_server
         {
             try
             {
-                LOG.InfoFormat("Send {0}:{1},body:{2}", remote.Address.ToString(), remote.Port, Encoding.ASCII.GetString(bits));
+                if (ServerType == UDPServerType.ASCII)
+                {
+                    LOG.InfoFormat("({3}) Send {0}:{1},body:{2}", remote.Address.ToString(), remote.Port,
+                        Encoding.ASCII.GetString(bits).Replace("?", "."), Name);
+                }
+                else
+                {
+                    LOG.InfoFormat("({3}) Send {0}:{1},body len:{2}", remote.Address.ToString(), remote.Port,
+                        bits.Length, Name);
+                }
                 if (PrintHex)
                 {
                     PrintUtils.PrintHex(bits);
@@ -211,6 +229,12 @@ namespace xx_udp_server
         {
             IPEndPoint remote = new IPEndPoint(IPAddress.Parse(ip), port);
             Send(remote,Encoding.ASCII.GetBytes(msg));
+        }
+
+        public void Send(string ip, int port, byte[] bits)
+        {
+            IPEndPoint remote = new IPEndPoint(IPAddress.Parse(ip), port);
+            Send(remote, bits);
         }
 
         private void SendCallback(IAsyncResult ar)

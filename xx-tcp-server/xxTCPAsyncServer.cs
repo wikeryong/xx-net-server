@@ -45,7 +45,7 @@ namespace xx_tcp_server
         /// 获取和设置Header的长度
         /// </summary>
         public int HeaderLength { get; set; }
-        public string ServerName { get; set; }
+        public string Name { get; set; }
 
         public static ManualResetEvent allDone = new ManualResetEvent(false);
 
@@ -62,7 +62,7 @@ namespace xx_tcp_server
             socket.Bind(ipe);
             //设置监听  
             socket.Listen(10);
-            LOG.InfoFormat("Server start on port:{0}", port);
+            LOG.InfoFormat("({1}) Server start on port:{0}", port,Name);
             LOG.InfoFormat("Waiting for a connection");
             //连接客户端  
             while (true)
@@ -94,13 +94,13 @@ namespace xx_tcp_server
                 Socket handler = listener.EndAccept(ar);
 
                 string sessionId = xxTCPClients.AssignSessionId();
-                LOG.InfoFormat("New client:{0},sessionId:{1}", handler.RemoteEndPoint, sessionId);
+                LOG.InfoFormat("({2}) New client:{0},sessionId:{1}", handler.RemoteEndPoint, sessionId,Name);
 
                 xxClient client = new xxClient();
                 client.socket = handler;
                 client.SessionId = sessionId;
                 xxTCPClients.Add(client.SessionId, client);
-                LOG.InfoFormat("Clients count:{0}",xxTCPClients.ClientCount);
+                LOG.InfoFormat("({1}) Clients count:{0}",xxTCPClients.ClientCount,Name);
 
                 readState.workSocket = handler;
                 readState.sessionId = client.SessionId;
@@ -122,7 +122,7 @@ namespace xx_tcp_server
                 Socket handler = readState.workSocket;
                 if (!handler.Connected)
                 {
-                    LOG.InfoFormat("Connection closed!");
+                    LOG.InfoFormat("({0}) Connection closed!",Name);
                     return;
                 }
                 int bytesRead = handler.EndReceive(ar);
@@ -131,7 +131,7 @@ namespace xx_tcp_server
                     xxTCPHeader header = InstanceHeader?.Invoke();
                     if (header == null)
                     {
-                        LOG.Error("Not found instance xxHeader class");
+                        LOG.ErrorFormat("({0}) Not found instance xxHeader class",Name);
                         return;
                     }
                     header.bytes = readState.HeaderBytes;
@@ -148,7 +148,7 @@ namespace xx_tcp_server
 
                     
 
-                    LOG.InfoFormat("Read header from:{0},body len:{1}",handler.RemoteEndPoint,header.bodyLength);
+                    LOG.InfoFormat("({2}) Read header from:{0},body len:{1}",handler.RemoteEndPoint,header.bodyLength,Name);
                     readState.BodyBytes = new byte[header.bodyLength];
                     handler.BeginReceive(readState.BodyBytes, 0, header.bodyLength, SocketFlags.None, new AsyncCallback(ReadCallback), readState);
                 }
@@ -224,7 +224,7 @@ namespace xx_tcp_server
                 {
                     throw new Exception("Not found client by session:"+ sessionId);
                 }
-                LOG.DebugFormat("Send {0} bytes to {1}", msg.MsgBytes.Length, client.socket.RemoteEndPoint);
+                LOG.DebugFormat("({2}) Send {0} bytes to {1}", msg.MsgBytes.Length, client.socket.RemoteEndPoint,Name);
                 if (PrintSendHex)
                 {
                     PrintUtils.PrintHex(msg.MsgBytes);
@@ -254,12 +254,12 @@ namespace xx_tcp_server
                 Socket socket = handler.RemoteSocket;
                 // Complete sending the data to the remote device.
                 int bytesSent = socket.EndSend(ar);
-                LOG.InfoFormat("Sent {0} bytes to {1} finish!", bytesSent, socket.RemoteEndPoint);
+                LOG.InfoFormat("({2}) Sent {0} bytes to {1} finish!", bytesSent, socket.RemoteEndPoint,Name);
                 SendFinish?.Invoke(handler);
                 if (handler.CloseClient)
                 {
                     xxTCPClients.Close(handler.Client.SessionId);
-                    LOG.InfoFormat("Client :{0} closed!", handler.Client.SessionId);
+                    LOG.InfoFormat("({1}) Client :{0} closed!", handler.Client.SessionId,Name);
                 }
             }
             catch (Exception e)

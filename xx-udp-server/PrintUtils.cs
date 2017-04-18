@@ -15,6 +15,10 @@ namespace xx_udp_server
         }
         public static void PrintHex(byte[] bytes)
         {
+            if (bytes == null || bytes.Length <= 0)
+            {
+                return;
+            }
             LOG.Debug("---------------------------------- Raw  data ---------------------------------");
             string tmp = "|OFFSET   | ";
             for (int i = 0; i < 16; i++)
@@ -51,7 +55,24 @@ namespace xx_udp_server
                     }
 
                 }
-                tmp += "|" + Encoding.ASCII.GetString(lineBytes).Replace("?", ".") + "|";
+                tmp += "|";
+                for (int h = 0; h < 16; h++)
+                {
+                    if (h >= lineBytes.Length)
+                    {
+                        tmp += ".";
+                        continue;
+                    }
+                    if (lineBytes[h] >= 20 && lineBytes[h]<=126)
+                    {
+                        tmp += Convert.ToChar(lineBytes[h]);
+                    }
+                    else
+                    {
+                        tmp += ".";
+                    }
+                }
+                tmp += "|";
                 LOG.Debug(tmp);
                 tmp = "";
             }

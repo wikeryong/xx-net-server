@@ -18,7 +18,12 @@ namespace xx_udp_server
 
         public static xxUDPAsyncServer CreateUDPServer(string name,int port)
         {
+            if (servers.ContainsKey(name))
+            {
+                throw new Exception("UDP Server :"+name+" is exists!");
+            }
             xxUDPAsyncServer server = new xxUDPAsyncServer(port);
+            server.Name = name;
             servers.Add(name,server);
             return server;
         }

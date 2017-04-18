@@ -37,8 +37,12 @@ namespace xx_tcp_server
         /// <returns></returns>
         public static xxTCPAsyncServer CreateServer(string name, InstanceHeaderNeed instanceHeader)
         {
+            if (servers.ContainsKey(name))
+            {
+                throw new Exception("TCP Server :" + name + " is exists!");
+            }
             xxTCPAsyncServer asyncServer = new xxTCPAsyncServer();
-            asyncServer.ServerName = name;
+            asyncServer.Name = name;
             servers.Add(name,asyncServer);
             asyncServer.InstanceHeader = instanceHeader;
             return asyncServer;
