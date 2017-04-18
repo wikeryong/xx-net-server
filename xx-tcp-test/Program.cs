@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using xx_tcp;
+using xx_tcp_server;
 
 namespace xx_tcp_test
 {

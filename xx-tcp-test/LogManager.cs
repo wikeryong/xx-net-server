@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using log4net;
-using xx_tcp;
+using xx_tcp_server;
 
 namespace xx_tcp_test
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
-namespace xx_tcp
+namespace xx_tcp_server
 {
     public abstract class xxTCPHeader
     {

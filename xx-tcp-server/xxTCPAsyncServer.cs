@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace xx_tcp
+namespace xx_tcp_server
 {
     public class ReadState
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace xx_tcp
+namespace xx_tcp_server
 {
     public class xxTCPMsg
     {

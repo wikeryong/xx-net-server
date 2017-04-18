@@ -7,8 +7,8 @@
     <ProjectGuid>{71788668-78F0-4ADF-8A3F-6120A8C0D97D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>xx_tcp</RootNamespace>
-    <AssemblyName>xx-tcp</AssemblyName>
+    <RootNamespace>xx_tcp_server</RootNamespace>
+    <AssemblyName>xx-tcp-server</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
